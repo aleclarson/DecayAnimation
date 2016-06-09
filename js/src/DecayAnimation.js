@@ -1,6 +1,8 @@
-var Animation, Type, type;
+var Animation, Type, getArgProp, type;
 
 Animation = require("Animated").Animation;
+
+getArgProp = require("getArgProp");
 
 Type = require("Type");
 
@@ -15,15 +17,9 @@ type.optionTypes = {
 };
 
 type.defineFrozenValues({
-  deceleration: function(options) {
-    return options.deceleration;
-  },
-  startVelocity: function(options) {
-    return options.velocity;
-  },
-  restVelocity: function(options) {
-    return options.restVelocity;
-  }
+  deceleration: getArgProp("deceleration"),
+  startVelocity: getArgProp("velocity"),
+  restVelocity: getArgProp("restVelocity")
 });
 
 type.defineValues({
@@ -33,7 +29,7 @@ type.defineValues({
   _lastVelocity: null
 });
 
-type.defineMethods({
+type.overrideMethods({
   __onStart: function() {
     this.value = this.startValue;
     this.velocity = this.startVelocity;
