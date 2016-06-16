@@ -33,7 +33,7 @@ type.defineValues
 
 type.overrideMethods
 
-  __onStart: ->
+  __didStart: ->
     @value = @startValue
     @velocity = @startVelocity
     @_requestAnimationFrame()
@@ -53,7 +53,7 @@ type.overrideMethods
 
     return @value
 
-  __didComputeValue: ->
+  __didUpdate: ->
     @finish() if (Math.abs @velocity) < @restVelocity
 
 module.exports = type.build()

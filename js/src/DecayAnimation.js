@@ -30,7 +30,7 @@ type.defineValues({
 });
 
 type.overrideMethods({
-  __onStart: function() {
+  __didStart: function() {
     this.value = this.startValue;
     this.velocity = this.startVelocity;
     return this._requestAnimationFrame();
@@ -46,7 +46,7 @@ type.overrideMethods({
     this.velocity = this.startVelocity * kv;
     return this.value;
   },
-  __didComputeValue: function() {
+  __didUpdate: function() {
     if ((Math.abs(this.velocity)) < this.restVelocity) {
       return this.finish();
     }
