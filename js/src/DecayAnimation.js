@@ -1,8 +1,8 @@
-var Animation, Type, getArgProp, type;
+var Animation, Type, fromArgs, type;
 
 Animation = require("Animated").Animation;
 
-getArgProp = require("getArgProp");
+fromArgs = require("fromArgs");
 
 Type = require("Type");
 
@@ -17,9 +17,9 @@ type.optionTypes = {
 };
 
 type.defineFrozenValues({
-  deceleration: getArgProp("deceleration"),
-  startVelocity: getArgProp("velocity"),
-  restVelocity: getArgProp("restVelocity")
+  deceleration: fromArgs("deceleration"),
+  startVelocity: fromArgs("velocity"),
+  restVelocity: fromArgs("restVelocity")
 });
 
 type.defineValues({
@@ -55,4 +55,4 @@ type.overrideMethods({
 
 module.exports = type.build();
 
-//# sourceMappingURL=../../map/src/DecayAnimation.map
+//# sourceMappingURL=map/DecayAnimation.map

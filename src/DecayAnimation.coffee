@@ -1,7 +1,7 @@
 
 { Animation } = require "Animated"
 
-getArgProp = require "getArgProp"
+fromArgs = require "fromArgs"
 Type = require "Type"
 
 type = Type "DecayAnimation"
@@ -15,11 +15,11 @@ type.optionTypes =
 
 type.defineFrozenValues
 
-  deceleration: getArgProp "deceleration"
+  deceleration: fromArgs "deceleration"
 
-  startVelocity: getArgProp "velocity"
+  startVelocity: fromArgs "velocity"
 
-  restVelocity: getArgProp "restVelocity"
+  restVelocity: fromArgs "restVelocity"
 
 type.defineValues
 
