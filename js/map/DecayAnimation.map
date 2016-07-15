@@ -1,7 +1,7 @@
 {
   "version": 3,
   "file": "DecayAnimation.js",
-  "sourceRoot": "../../../src",
+  "sourceRoot": "../../src",
   "sources": [
     "DecayAnimation.coffee"
   ],

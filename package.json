@@ -1,7 +1,7 @@
 {
   "name": "DecayAnimation",
   "version": "1.0.0",
-  "main": "js/src/DecayAnimation",
+  "main": "js/DecayAnimation",
   "dependencies": {
     "Animated": "aleclarson/Animated#2.0.0",
     "Type": "aleclarson/Type#1.0.0",
