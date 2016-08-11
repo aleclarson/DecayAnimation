@@ -1,4 +1,4 @@
-var Animation, Type, fromArgs, type;
+var Animation, Nan, Type, fromArgs, type;
 
 Animation = require("Animated").Animation;
 
@@ -6,18 +6,20 @@ fromArgs = require("fromArgs");
 
 Type = require("Type");
 
+Nan = require("Nan");
+
 type = Type("DecayAnimation");
 
 type.inherits(Animation);
 
-type.optionTypes = {
-  deceleration: Number,
-  velocity: Number,
-  restVelocity: Number
-};
+type.defineOptions({
+  decayRate: Number.isRequired,
+  velocity: Number.isRequired,
+  restVelocity: Number.isRequired
+});
 
 type.defineFrozenValues({
-  deceleration: fromArgs("deceleration"),
+  decayRate: fromArgs("decayRate"),
   startVelocity: fromArgs("velocity"),
   restVelocity: fromArgs("restVelocity")
 });
@@ -40,7 +42,7 @@ type.overrideMethods({
     this._lastValue = this.value;
     this._lastVelocity = this.velocity;
     elapsedTime = Date.now() - this.startTime;
-    kd = 1 - this._deceleration;
+    kd = 1 - this.decayRate;
     kv = Math.exp(-1 * elapsedTime * kd);
     this.value = this.startValue + (this.startVelocity / kd) * (1 - kv);
     this.velocity = this.startVelocity * kv;

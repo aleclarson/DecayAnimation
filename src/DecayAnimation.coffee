@@ -3,19 +3,20 @@
 
 fromArgs = require "fromArgs"
 Type = require "Type"
+Nan = require "Nan"
 
 type = Type "DecayAnimation"
 
 type.inherits Animation
 
-type.optionTypes =
-  deceleration: Number
-  velocity: Number
-  restVelocity: Number
+type.defineOptions
+  decayRate: Number.isRequired
+  velocity: Number.isRequired
+  restVelocity: Number.isRequired
 
 type.defineFrozenValues
 
-  deceleration: fromArgs "deceleration"
+  decayRate: fromArgs "decayRate"
 
   startVelocity: fromArgs "velocity"
 
@@ -45,7 +46,7 @@ type.overrideMethods
 
     elapsedTime = Date.now() - @startTime
 
-    kd = 1 - @_deceleration
+    kd = 1 - @decayRate
     kv = Math.exp -1 * elapsedTime * kd
 
     @value = @startValue + (@startVelocity / kd) * (1 - kv)
