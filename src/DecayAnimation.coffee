@@ -1,9 +1,8 @@
 
-{ Animation } = require "Animated"
+{Animation} = require "Animated"
+{Number} = require "Nan"
 
-fromArgs = require "fromArgs"
 Type = require "Type"
-Nan = require "Nan"
 
 type = Type "DecayAnimation"
 
@@ -14,13 +13,13 @@ type.defineOptions
   velocity: Number.isRequired
   restVelocity: Number.isRequired
 
-type.defineFrozenValues
+type.defineFrozenValues (options) ->
 
-  decayRate: fromArgs "decayRate"
+  decayRate: options.decayRate
 
-  startVelocity: fromArgs "velocity"
+  startVelocity: options.velocity
 
-  restVelocity: fromArgs "restVelocity"
+  restVelocity: options.restVelocity
 
 type.defineValues
 
@@ -34,9 +33,10 @@ type.defineValues
 
 type.overrideMethods
 
-  __didStart: ->
-    @value = @startValue
-    @velocity = @startVelocity
+  __didStart: (config) ->
+    @time = @startTime = Date.now()
+    @value = @startValue = config.startValue
+    @velocity = @startVelocity ?= config.velocity
     @_requestAnimationFrame()
 
   __computeValue: ->

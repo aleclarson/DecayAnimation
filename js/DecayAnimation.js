@@ -1,12 +1,10 @@
-var Animation, Nan, Type, fromArgs, type;
+var Animation, Number, Type, type;
 
 Animation = require("Animated").Animation;
 
-fromArgs = require("fromArgs");
+Number = require("Nan").Number;
 
 Type = require("Type");
-
-Nan = require("Nan");
 
 type = Type("DecayAnimation");
 
@@ -18,10 +16,12 @@ type.defineOptions({
   restVelocity: Number.isRequired
 });
 
-type.defineFrozenValues({
-  decayRate: fromArgs("decayRate"),
-  startVelocity: fromArgs("velocity"),
-  restVelocity: fromArgs("restVelocity")
+type.defineFrozenValues(function(options) {
+  return {
+    decayRate: options.decayRate,
+    startVelocity: options.velocity,
+    restVelocity: options.restVelocity
+  };
 });
 
 type.defineValues({
@@ -32,9 +32,10 @@ type.defineValues({
 });
 
 type.overrideMethods({
-  __didStart: function() {
-    this.value = this.startValue;
-    this.velocity = this.startVelocity;
+  __didStart: function(config) {
+    this.time = this.startTime = Date.now();
+    this.value = this.startValue = config.startValue;
+    this.velocity = this.startVelocity != null ? this.startVelocity : this.startVelocity = config.velocity;
     return this._requestAnimationFrame();
   },
   __computeValue: function() {
