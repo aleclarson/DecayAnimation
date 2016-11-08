@@ -31,13 +31,14 @@ type.defineValues
 
   _lastVelocity: null
 
+type.initInstance (options) ->
+  @velocity = options.velocity
+
 type.overrideMethods
 
-  __didStart: (config) ->
-    @time = @startTime = Date.now()
-    @value = @startValue = config.startValue
-    @velocity = @startVelocity ?= config.velocity
-    @_requestAnimationFrame()
+  __onAnimationStart: ->
+    @value = @fromValue
+    @__super arguments
 
   __computeValue: ->
 
@@ -49,12 +50,15 @@ type.overrideMethods
     kd = 1 - @decayRate
     kv = Math.exp -1 * elapsedTime * kd
 
-    @value = @startValue + (@startVelocity / kd) * (1 - kv)
+    @value = @fromValue + (@startVelocity / kd) * (1 - kv)
     @velocity = @startVelocity * kv
 
     return @value
 
-  __didUpdate: ->
-    @finish() if (Math.abs @velocity) < @restVelocity
+  __onAnimationUpdate: ->
+    @finish() if @restVelocity >= Math.abs @velocity
+
+  __getNativeConfig: ->
+    {type: "decay", @decayRate, @velocity}
 
 module.exports = type.build()
