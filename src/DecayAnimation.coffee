@@ -56,7 +56,8 @@ type.overrideMethods
     return @value
 
   __onAnimationUpdate: ->
-    @finish() if @restVelocity >= Math.abs @velocity
+    if @restVelocity >= Math.abs @velocity
+      @stop yes
 
   __getNativeConfig: ->
     {type: "decay", @decayRate, @velocity}
