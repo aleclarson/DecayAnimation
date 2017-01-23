@@ -1,25 +1,25 @@
 
-{ Animation } = require "Animated"
+{Animation} = require "Animated"
+{Number} = require "Nan"
 
-fromArgs = require "fromArgs"
 Type = require "Type"
 
 type = Type "DecayAnimation"
 
 type.inherits Animation
 
-type.optionTypes =
-  deceleration: Number
-  velocity: Number
-  restVelocity: Number
+type.defineOptions
+  decayRate: Number.isRequired
+  velocity: Number.isRequired
+  restVelocity: Number.isRequired
 
-type.defineFrozenValues
+type.defineFrozenValues (options) ->
 
-  deceleration: fromArgs "deceleration"
+  decayRate: options.decayRate
 
-  startVelocity: fromArgs "velocity"
+  startVelocity: options.velocity
 
-  restVelocity: fromArgs "restVelocity"
+  restVelocity: options.restVelocity
 
 type.defineValues
 
@@ -31,12 +31,14 @@ type.defineValues
 
   _lastVelocity: null
 
+type.initInstance (options) ->
+  @velocity = options.velocity
+
 type.overrideMethods
 
-  __didStart: ->
-    @value = @startValue
-    @velocity = @startVelocity
-    @_requestAnimationFrame()
+  __onAnimationStart: ->
+    @value = @fromValue
+    @__super arguments
 
   __computeValue: ->
 
@@ -45,15 +47,19 @@ type.overrideMethods
 
     elapsedTime = Date.now() - @startTime
 
-    kd = 1 - @_deceleration
+    kd = 1 - @decayRate
     kv = Math.exp -1 * elapsedTime * kd
 
-    @value = @startValue + (@startVelocity / kd) * (1 - kv)
+    @value = @fromValue + (@startVelocity / kd) * (1 - kv)
     @velocity = @startVelocity * kv
 
     return @value
 
-  __didUpdate: ->
-    @finish() if (Math.abs @velocity) < @restVelocity
+  __onAnimationUpdate: ->
+    if @restVelocity >= Math.abs @velocity
+      @stop yes
+
+  __getNativeConfig: ->
+    {type: "decay", @decayRate, @velocity}
 
 module.exports = type.build()
