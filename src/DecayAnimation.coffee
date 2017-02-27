@@ -8,10 +8,12 @@ type = Type "DecayAnimation"
 
 type.inherits Animation
 
-type.defineOptions
-  decayRate: Number.isRequired
-  velocity: Number.isRequired
-  restVelocity: Number.isRequired
+type.defineArgs ->
+  required: yes
+  types:
+    decayRate: Number
+    velocity: Number
+    restVelocity: Number
 
 type.defineFrozenValues (options) ->
 
