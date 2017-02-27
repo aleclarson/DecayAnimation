@@ -1,0 +1,10 @@
+{
+  "name": "DecayAnimation",
+  "version": "1.2.0",
+  "main": "js/DecayAnimation",
+  "dependencies": {
+    "Animated": "aleclarson/Animated#3.6.0",
+    "Nan": "aleclarson/Nan#1.1.1",
+    "Type": "aleclarson/Type#2.3.1"
+  }
+}
